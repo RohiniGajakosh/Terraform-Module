@@ -1,4 +1,13 @@
+cat <<EOF > .gitignore
+# Terraform
 .terraform/
 *.tfstate
 *.tfstate.backup
 *.terraform.lock.hcl
+
+# General
+.env
+node_modules/
+.DS_Store
+Thumbs.db
+EOF
