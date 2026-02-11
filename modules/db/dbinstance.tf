@@ -1,3 +1,10 @@
+data "aws_secretsmanager_secret" "dbpassword" {
+  name = "${var.environment}/mysql/dbpassword"
+}
+
+data "aws_secretsmanager_secret_version" "dbpasswordversion" {
+  secret_id = data.aws_secretsmanager_secret.dbpassword.id
+}
 resource "aws_db_instance" "moduledb" {
   allocated_storage      = var.dballocatedstorage
   max_allocated_storage  = 100 # Enables Storage Autoscaling
@@ -8,7 +15,7 @@ resource "aws_db_instance" "moduledb" {
   skip_final_snapshot    = true
   # Credentials
   username               = var.dbusername
-  password               = var.dbpassword # Consider using AWS Secrets Manager instead
+  password               = data.aws_secretsmanager_secret_version.dbpasswordversion.secret_string # Consider using AWS Secrets Manager instead
   
   # Network & Security
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name

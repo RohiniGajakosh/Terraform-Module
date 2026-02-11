@@ -7,7 +7,6 @@ variable "dbname" {
 variable "dbusername" {
     description = "username for the database"
     type = string
-    default = "rohini"
 }   
 variable "dbpassword" {
   description = "Password for the database"

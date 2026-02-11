@@ -29,3 +29,7 @@ variable "dbpassword" {
   sensitive   = true
 }
 
+variable "dbusername" {
+  description = "username for the database"
+  type        = string
+}
