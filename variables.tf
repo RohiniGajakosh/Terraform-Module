@@ -29,7 +29,7 @@ variable "vpc_cidr" {
 #   sensitive   = true
 # }
 
-variable "dbusername" {
+variable "DBUSERNAME" {
   description = "username for the database"
   type        = string
 }

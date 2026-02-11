@@ -19,7 +19,7 @@ module "iam" {
 
 module "db" {
   source               = "./modules/db"
-  dbusername           = var.dbusername
+  dbusername           = var.DBUSERNAME
   # dbpassword           = var.dbpassword
   private_subnet_ids   = module.network.private_subnet_ids
   db_security_group_id = module.compute.instance_sg_id
