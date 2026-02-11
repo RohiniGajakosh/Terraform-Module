@@ -8,19 +8,19 @@ variable "dbusername" {
     description = "username for the database"
     type = string
 }   
-variable "dbpassword" {
-  description = "Password for the database"
-  type        = string
-  sensitive   = true
+# variable "dbpassword" {
+#   description = "Password for the database"
+#   type        = string
+#   sensitive   = true
 
-  validation {
-    condition = (
-      length(var.dbpassword) >= 8
-    )
+#   validation {
+#     condition = (
+#       length(var.dbpassword) >= 8
+#     )
 
-    error_message = "DB password must be at least 8 characters and include uppercase, lowercase, number, and special character."
-  }
-}
+#     error_message = "DB password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+#   }
+# }
 
 variable "dballocatedstorage" {
     description = "allocated storage for the database"

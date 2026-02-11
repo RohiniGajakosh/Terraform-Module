@@ -23,11 +23,11 @@ variable "vpc_cidr" {
 }
 
 
-variable "dbpassword" {
-  description = "password for the database"
-  type        = string
-  sensitive   = true
-}
+#  variable "dbpassword" {
+#   description = "password for the database"
+#   type        = string
+#   sensitive   = true
+# }
 
 variable "dbusername" {
   description = "username for the database"

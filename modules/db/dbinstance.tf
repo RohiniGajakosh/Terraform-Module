@@ -5,6 +5,12 @@ data "aws_secretsmanager_secret" "dbpassword" {
 data "aws_secretsmanager_secret_version" "dbpasswordversion" {
   secret_id = data.aws_secretsmanager_secret.dbpassword.id
 }
+
+locals {
+  dbpassword = jsondecode(
+    data.aws_secretsmanager_secret_version.dbpasswordversion.secret_string
+  )["dbpassword"]
+}
 resource "aws_db_instance" "moduledb" {
   allocated_storage      = var.dballocatedstorage
   max_allocated_storage  = 100 # Enables Storage Autoscaling
@@ -15,7 +21,7 @@ resource "aws_db_instance" "moduledb" {
   skip_final_snapshot    = true
   # Credentials
   username               = var.dbusername
-  password               = data.aws_secretsmanager_secret_version.dbpasswordversion.secret_string # Consider using AWS Secrets Manager instead
+  password               = local.dbpassword # Consider using AWS Secrets Manager instead
   
   # Network & Security
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name

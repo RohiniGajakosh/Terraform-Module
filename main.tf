@@ -17,14 +17,10 @@ module "iam" {
   source = "./modules/IAM"
 }
 
-module "secretsmanager" {
-  source     = "./modules/secretsmanager"
-  dbpassword = var.dbpassword
-}
 module "db" {
   source               = "./modules/db"
   dbusername           = var.dbusername
-  dbpassword           = var.dbpassword
+  # dbpassword           = var.dbpassword
   private_subnet_ids   = module.network.private_subnet_ids
   db_security_group_id = module.compute.instance_sg_id
   vpc_id               = module.network.vpc_id
