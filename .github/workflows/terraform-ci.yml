@@ -36,3 +36,8 @@ jobs:
       env:
         TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}
       run: terraform plan
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      env:
+        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}
+      run: terraform apply -auto-approve
