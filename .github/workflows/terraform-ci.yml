@@ -25,9 +25,8 @@ jobs:
       run: terraform fmt -write=true
     - name: Terraform Validate
       run: terraform validate
-    - name: Check env var
-      run: |
-       echo "DB USERNAME IS SET"
-       printenv | grep TF_VAR_DBUSERNAME
+
     - name: Terraform Plan
+      env:
+        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}
       run: terraform plan
