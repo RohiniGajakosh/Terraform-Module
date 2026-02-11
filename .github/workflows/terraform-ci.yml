@@ -28,7 +28,6 @@ jobs:
     - name: Check env var
       run: |
        echo "DB USERNAME IS SET"
-       printenv | grep TF_VAR_dbusername
-
+       printenv | grep TF_VAR_DBUSERNAME
     - name: Terraform Plan
       run: terraform plan
