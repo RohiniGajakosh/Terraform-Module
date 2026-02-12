@@ -11,8 +11,8 @@ jobs:
   terraform:
     name: Terraform CI Pipeline
     runs-on: ubuntu-latest
-    # env:
-    #   TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}   # Sets the Terraform Cloud API token as an environment variable for Terraform to authenticate with Terraform Cloud.
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}   # Sets the Terraform Cloud API token as an environment variable for Terraform to authenticate with Terraform Cloud.
     steps:
     - name: Checkout code
       uses: actions/checkout@v2   # Checks out the repository code so that Terraform can access the configuration files.
