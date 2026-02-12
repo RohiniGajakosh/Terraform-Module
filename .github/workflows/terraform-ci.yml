@@ -58,7 +58,7 @@ jobs:
 
         - name: Terraform Plan
           env:
-            TF_VAR_DBUSER: ${{ secrets.TF_VAR_DBUSERNAME}}
+            TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME}}
           run: terraform plan -out=tfplan
         
         - name: Upload Plan
