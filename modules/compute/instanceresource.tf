@@ -6,9 +6,7 @@ locals {
     # Consider using a static variable if you only want the 'original' creation date.
     CreateDate = formatdate("YYYY-MM-DD hh:mm:ss Z", timestamp())
     Environment = var.environment
-  }
-
-  
+  }  
 }
 
 data "aws_ami" "amazon_linux" {
@@ -37,7 +35,13 @@ resource "aws_security_group" "web_sg" {
       cidr_blocks      = ingress.value.cidr_blocks
     }
   }
-
+   # HTTP only from ALB
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb_sg.id]
+  }
   egress {
     from_port   = 0
     to_port     = 0

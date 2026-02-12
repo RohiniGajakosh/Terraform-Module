@@ -45,10 +45,6 @@ variable "web_ingress_rules" {
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"] # Consider narrowing this to your IP for better security!
     },
-    "http" = {
-      port        = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"] # Open to the world for web access
-    }
+
   }
 }

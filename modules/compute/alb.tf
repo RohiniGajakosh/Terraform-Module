@@ -2,7 +2,7 @@ resource "aws_lb" "weblb" {
   name               = "my-load-balancer"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.web_sg.id]
+  security_groups    = [aws_security_group.lb_sg.id]
   subnets            = var.public_subnets
 
 }
@@ -59,6 +59,12 @@ resource "aws_security_group" "lb_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    security_groups = [aws_security_group.web_sg.id] # Allows access from the compute instance security group 
-}
+    cidr_blocks = ["0.0.0.0/0"] # Open to the world for web access 
+  }
+   egress { 
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
 }
