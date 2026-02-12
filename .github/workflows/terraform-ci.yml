@@ -11,17 +11,19 @@ jobs:
   terraform:
     name: Terraform CI for Format and Validate
     runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2   # Checks out the repository code so that Terraform can access the configuration files.
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v4  # Configures AWS credentials for Terraform to interact with AWS resources.
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
     - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v3   # Sets up the specified version of Terraform for use in the workflow.
       with:
         terraform_version: 1.14.3
     - name: Terraform Init
@@ -34,10 +36,10 @@ jobs:
 
     - name: Terraform Plan
       env:
-        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}
-      run: terraform plan
+        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}   # Passes the database username as an environment variable to Terraform during the plan step.
+      run: terraform plan -out=tfplan
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.event_name == 'workflow_dispatch'       
       env:
-        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}
-      run: terraform apply -auto-approve
+        TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}   
+      run: terraform apply -auto-approve tfplan

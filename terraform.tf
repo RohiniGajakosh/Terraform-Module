@@ -1,4 +1,13 @@
 terraform {
+   cloud {
+    organization = "rohini-org"
+
+    workspaces {
+      project = "ExamTerraform"
+      name = "ExamPrep"
+    }
+  }
+  
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -10,5 +19,6 @@ terraform {
     }
   }
   required_version = "~>1.14.3"
+
 }
 
