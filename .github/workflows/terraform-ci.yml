@@ -33,7 +33,10 @@ jobs:
       run: terraform fmt -write=true
     - name: Terraform Validate
       run: terraform validate
-
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+    #commented since im using terraform vcs integration to plan and apply so the plan and apply steps are not needed in the ci pipeline. The ci pipeline is only for format and validate.
+    #the flow is that when we push code to the main branch, the ci pipeline will run and check for format and validate. If the format and validate steps are successful, then the code will be merged to the main branch and then the terraform cloud vcs integration will automatically trigger the plan and apply steps in terraform cloud. This way we can ensure that the code is always in a good state before it is applied to the infrastructure.
     # - name: Terraform Plan
     #   env:
     #     TF_VAR_DBUSERNAME: ${{ secrets.TF_VAR_DBUSERNAME }}   # Passes the database username as an environment variable to Terraform during the plan step.
