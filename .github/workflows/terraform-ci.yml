@@ -41,7 +41,7 @@ jobs:
         TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN}}
       steps:
         - name: Checkout code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
 
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
