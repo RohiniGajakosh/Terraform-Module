@@ -53,7 +53,7 @@ jobs:
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ secrets.AWS_REGION }}
         
-        - name: Terraform Init
+        - name: Terraform Init     #every job needs to be initialized as they run on different runners
           run: terraform init
 
         - name: Terraform Plan
@@ -89,7 +89,7 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ secrets.AWS_REGION }}
-        - name: Terraform Init  
+        - name: Terraform Init    #every job needs to be initialized as they run on different runners
           run: terraform init
         - name: Download Plan
           uses: actions/download-artifact@v4
