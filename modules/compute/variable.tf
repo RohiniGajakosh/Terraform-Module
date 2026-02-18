@@ -16,10 +16,10 @@ variable "environment" {
   default = "dev"
 }
 
-variable "subnet_id" {
-  description = "the subnet id"
-  type = string
-}
+# variable "subnet_id" {
+#   description = "the subnet id"
+#   type = string
+# }
 
 
 variable "vpc_id" {
@@ -30,7 +30,18 @@ variable "public_subnets" {
   description = "the public subnets"
   type = list(string) 
 }
+variable "private_subnets" { 
+  description = "the public subnets"
+  type = list(string) 
+}
 
+variable "bucketname" {
+  description = "name of the bucket"
+  type = string
+}
+variable "alb_logs_policy_dependency" {
+  type = string
+}
 # Note: You can also use a map of objects for more complex security group rules.
 # This allows you to define multiple rules in a more structured way.
 variable "web_ingress_rules" {

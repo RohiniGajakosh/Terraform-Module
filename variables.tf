@@ -33,3 +33,18 @@ variable "DBUSERNAME" {
   description = "username for the database"
   type        = string
 }
+variable "AWS_ACCESS_KEY_ID" {
+  description = "aws access key id to loginto the aws"
+  type = string
+}
+
+variable "AWS_REGION" {
+  description = "AWS Region to create the resources"
+  type = string 
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  description = "Aws secret key to loginto aws"
+  type = string
+  
+}

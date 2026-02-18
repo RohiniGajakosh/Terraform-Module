@@ -7,7 +7,10 @@ module "compute" {
   environment    = var.environment
   vpc_id         = module.network.vpc_id
   public_subnets = module.network.public_subnet_ids    # This must match your VPC output name
-  subnet_id      = module.network.public_subnet_ids[0] # Example: using the first public subnet for instances
+  private_subnets = module.network.private_subnet_ids
+  bucketname = module.s3.bucketname
+  # bucketarn = module.s3.bucketarn
+  alb_logs_policy_dependency = module.s3.alb_logs_policy_id 
 }
 
 module "s3" {
@@ -19,7 +22,7 @@ module "iam" {
 
 module "db" {
   source               = "./modules/db"
-  dbusername           = var.DBUSERNAME
+  db_username           = var.DBUSERNAME
   private_subnet_ids   = module.network.private_subnet_ids
   db_security_group_id = module.compute.instance_sg_id
   vpc_id               = module.network.vpc_id

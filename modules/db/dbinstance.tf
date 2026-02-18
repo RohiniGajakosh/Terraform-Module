@@ -1,66 +1,75 @@
-data "aws_secretsmanager_secret" "dbpassword" {
-  name = "${var.environment}/mysql/dbpassword"
-}
+# resource "random_password" "dbpassword" {
+#   length = 8
+#   special = true
+# }
 
-data "aws_secretsmanager_secret_version" "dbpasswordversion" {
-  secret_id = data.aws_secretsmanager_secret.dbpassword.id
-}
+# resource "aws_secretsmanager_secret" "dbsecret" {
+#   name = "mysql-db-secret"
+# }
 
-locals {
-  dbpassword = jsondecode(
-    data.aws_secretsmanager_secret_version.dbpasswordversion.secret_string
-  )["dbpassword"]
-}
-resource "aws_db_instance" "moduledb" {
-  allocated_storage      = var.dballocatedstorage
-  max_allocated_storage  = 100 # Enables Storage Autoscaling
-  db_name                = var.dbname
-  engine                 = "mysql"
-  engine_version         = "8.0" # Ideally, use a more specific version like 8.0.35
-  instance_class         = var.dbinstanceclass
-  skip_final_snapshot    = true
-  # Credentials
-  username               = var.dbusername
-  password               = local.dbpassword # Consider using AWS Secrets Manager instead
+# resource "aws_secretsmanager_secret_version" "dbsecret_value" {
+#   secret_id = aws_secretsmanager_secret.dbsecret.id
+
+#   secret_string = jsonencode({
+#     username = var.db_username
+#     password = random_password.dbpassword.result
+#     engine   = "mysql"
+#     db_name  = var.dbname
+#     host = aws_db_instance.moduledb.id
+#     port = 3306
+#   })
+# }
+# resource "aws_db_instance" "moduledb" {
+#   identifier = "mysqldb"
+#   allocated_storage      = var.dballocatedstorage
+#   max_allocated_storage  = 100 # Enables Storage Autoscaling
+#   db_name                = var.dbname
+#   engine                 = "mysql"
+#   engine_version         = "8.0" # Ideally, use a more specific version like 8.0.35
+#   instance_class         = var.dbinstanceclass
+#   skip_final_snapshot    = true
+#   # Credentials
+#   username               = var.db_username
+#   password               = random_password.dbpassword.result       # Consider using AWS Secrets Manager instead
   
-  # Network & Security
-  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.db_sg.id]
-  publicly_accessible    = false
+#   # Network & Security
+#   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
+#   vpc_security_group_ids = [aws_security_group.db_sg.id]
+#   publicly_accessible    = false
   
-  # Lifecycle & Maintenance
-  parameter_group_name   = "default.mysql8.0"
-  final_snapshot_identifier = "${var.dbname}-final-snapshot"
+#   # Lifecycle & Maintenance
+#   parameter_group_name   = "default.mysql8.0"
+#   final_snapshot_identifier = "${var.dbname}-final-snapshot"
   
-  # Protect against accidental 'terraform destroy'
-  deletion_protection    = var.environment == "prod" ? true : false
+#   # Protect against accidental 'terraform destroy'
+#   deletion_protection    = var.environment == "prod" ? true : false
 
-  lifecycle {
-    ignore_changes = [password] # Prevents password drift if changed manually
-  }
-}
+#   lifecycle {
+#     ignore_changes = [password] # Prevents password drift if changed manually
+#   }
+# }
 
-resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "${var.environment}-db-subnet-group"
-  subnet_ids = var.private_subnet_ids
-  tags = {
-    Name        = "DBSubnetGroup"
-    Environment = var.environment
-  }
-}
+# resource "aws_db_subnet_group" "db_subnet_group" {
+#   name       = "${var.environment}-db-subnet-group"
+#   subnet_ids = var.private_subnet_ids
+#   tags = {
+#     Name        = "DBSubnetGroup"
+#     Environment = var.environment
+#   }
+# }
 
-resource "aws_security_group" "db_sg" {
-  name        = "mysql-security-group"
-  description = "Security group for MySQL database"
-  vpc_id      = var.vpc_id
+# resource "aws_security_group" "db_sg" {
+#   name        = "mysql-security-group"
+#   description = "Security group for MySQL database"
+#   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    security_groups = [var.db_security_group_id] # Allows access from the compute instance which is called in rootmodule db and calling here from the main.tf of root module
-  }
-    tags = {
-        Name = "MySQLSecurityGroup"
-    }
-}
+#   ingress {
+#     from_port   = 3306
+#     to_port     = 3306
+#     protocol    = "tcp"
+#     security_groups = [var.db_security_group_id] # Allows access from the compute instance which is called in rootmodule db and calling here from the main.tf of root module
+#   }
+#     tags = {
+#         Name = "MySQLSecurityGroup"
+#     }
+# }
