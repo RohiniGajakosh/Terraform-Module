@@ -18,9 +18,9 @@ output "vpc_cidr" {
 output "vpc_id" {
   value = module.network.vpc_id
 }
-output "db_endpoint" {
-  value = module.db.dbendpoint
-}
+# output "db_endpoint" {
+#   value = module.db.dbendpoint
+# }
 
 # output "application_urls" {
 #   # This loops through the tuple and creates a list of strings

@@ -1,0 +1,51 @@
+#here i have not created a network for containers to talk to each other so it bydefault creates itself 
+
+services:
+  redis:
+    image: redis:7
+    ports:
+      - 6379:6379
+    restart: always
+    container_name: redis-container
+    networks:
+      - profile-app-network
+  mongo: 
+    image: mongo
+    restart : always
+    container_name: mongo-container
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=root123
+    networks:
+      - profile-app-network
+  mongo-express:
+    image: mongo-express
+    restart: always
+    container_name: mongo-express-container
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:root123@mongo:27017/         #mongodb://username:password@hostname:port/
+      - ME_CONFIG_BASICAUTH_ENABLED=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=root123
+    depends_on:
+      - mongo 
+    networks:
+      - profile-app-network
+  nodeapp:
+      build: .
+      ports: 
+        - 3000:3000
+      container_name: node-profileapp
+      depends_on:
+        - mongo
+        - redis  
+      networks:
+      - profile-app-network
+  
+  
+
+networks:
+    profile-app-network:
+

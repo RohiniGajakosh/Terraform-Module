@@ -1,13 +1,13 @@
 terraform {
-   cloud {
+  cloud {
     organization = "rohini-org"
 
     workspaces {
       project = "ExamTerraform"
-      name = "ExamPrep"
+      name    = "ExamPrep"
     }
   }
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

@@ -1,0 +1,48 @@
+services:
+   mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - my-network
+
+   wordpress:
+    image: wordpress:latest
+    container_name: wordpress-app
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql-db:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpress
+    networks:
+      - my-network
+
+   nginx:
+    image: nginx:latest
+    container_name: nginx-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - wordpress
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - my-network
+
+volumes:
+  mysql-data:
+
+networks:
+  my-network:
+    driver: bridge

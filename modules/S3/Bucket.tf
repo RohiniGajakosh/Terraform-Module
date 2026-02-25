@@ -24,7 +24,7 @@ resource "aws_s3_bucket_policy" "alb_logs_policy" {
         "s3:PutObject",
         "s3:PutObjectAcl"
       ],
-      "Resource": "arn:aws:s3:::logs-bucket-3e095dc9/AWSLogs/*"
+      "Resource": "arn:aws:s3:::logs-bucket-${random_id.bucket_id.hex}/AWSLogs/*"
     },
     {
       "Sid": "AWSLogDeliveryAclCheck",
@@ -33,7 +33,7 @@ resource "aws_s3_bucket_policy" "alb_logs_policy" {
         "Service": "logdelivery.elasticloadbalancing.amazonaws.com"
       },
       "Action": "s3:GetBucketAcl",
-      "Resource": "arn:aws:s3:::logs-bucket-3e095dc9"
+      "Resource": "arn:aws:s3:::logs-bucket-${random_id.bucket_id.hex}"
     }
   ]
 })

@@ -16,3 +16,17 @@
 # output "vpc_id" {
 #   value = var.vpc_id
 # }
+
+output "aurora_endpoint" {
+  value = aws_rds_cluster.aurora_postgres.endpoint
+  description = "Aurora PostgreSQL cluster endpoint (for app connection string)"
+}
+
+output "aurora_port" {
+  value = 5432
+}
+
+output "aurora_secret_arn" {
+  value = aws_secretsmanager_secret.aurora_secret.arn
+  description = "ARN of secret containing Aurora DB credentials"
+}

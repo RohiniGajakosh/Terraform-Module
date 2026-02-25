@@ -3,25 +3,6 @@
 #     type = string
 #     default = "mysqldb"
 # }
-
-# variable "db_username" {
-#     description = "username for the database"
-#     type = string
-# }   
-# # variable "dbpassword" {
-# #   description = "Password for the database"
-# #   type        = string
-# #   sensitive   = true
-
-# #   validation {
-# #     condition = (
-# #       length(var.dbpassword) >= 8
-# #     )
-
-# #     error_message = "DB password must be at least 8 characters and include uppercase, lowercase, number, and special character."
-# #   }
-# # }
-
 # variable "dballocatedstorage" {
 #     description = "allocated storage for the database"
 #     type = number
@@ -33,20 +14,33 @@
 #     default = "db.t3.micro"
 # }
 
-# variable "private_subnet_ids" {
-#   type = list(string)
+variable "private_subnet_ids" {
+  type = list(string)
+}
+
+variable "vpc_id" {
+  type = string
+}
+
+
+variable "db_username" {
+  description = "username for the database"
+  type = string
+  default = "aurora_admin"
+} 
+# variable "documentdb_sg" {
+#   type = string
 # }
 
-# variable "environment" {
-#   type = string
-#   default = "dev"
-# }
+variable "web_sg" {
+  type        = string
+  description = "Security group ID of the app (ECS/EC2)"
+}
+variable "environment" {
+  type = string
+  default = "dev"
+}
 
-# variable "db_security_group_id" {
-#   type = string
-  
-# }
-
-# variable "vpc_id" {
-#   type = string
-# }
+variable "availability_zones" {
+  type = list(string)
+}

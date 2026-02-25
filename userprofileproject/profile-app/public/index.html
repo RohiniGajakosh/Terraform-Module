@@ -1,0 +1,49 @@
+<h2>User Profile</h2>
+
+<input id="name" placeholder="name">
+<input id="email" placeholder="email">
+<input id="designation" placeholder="designation">
+
+<button onclick="save()">Save</button>
+
+<ul id="list"></ul>
+
+<script>
+
+async function save(){
+
+ const nameInput = document.getElementById("name");
+ const emailInput = document.getElementById("email");
+ const designationInput = document.getElementById("designation");
+
+ await fetch("/user",{
+   method:"POST",
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+     name:nameInput.value,
+     email:emailInput.value,
+     designation:designationInput.value
+   })
+ });
+
+ load();
+
+}
+
+async function load(){
+
+ const res = await fetch("/users");
+
+ const users = await res.json();
+
+ list.innerHTML="";
+
+ users.forEach(u=>{
+   list.innerHTML+=`<li>${u.name} (${u.email}) - ${u.designation}</li>`;
+ });
+
+}
+
+load();
+
+</script>
